@@ -1,15 +1,16 @@
 {
   "manifestVersion": 1,
-  "id": "plugin_template",
-  "name": "Plugin Template",
-  "author": "remnote",
-  "repoUrl": "",
+  "id": "image_search",
+  "name": "Image Search",
+  "author": "ankur",
+  "repoUrl": "https://github.com/ankurGhosh1/remnote-image-search",
   "version": {
     "major": 0,
     "minor": 0,
     "patch": 1
   },
-  "description": "",
+  "enableOnMobile": false,
+  "description": "Image Search Plugin",
   "requestNative": false,
   "requiredScopes": [
     {
