@@ -4,7 +4,7 @@ import '../App.css';
 
 async function onActivate(plugin: ReactRNPlugin) {
   // Register settings
-  await plugin.app.registerWidget('selected_Iimage_search', WidgetLocation.SelectedTextMenu, {
+  await plugin.app.registerWidget('selected_image_search', WidgetLocation.SelectedTextMenu, {
     dimensions: {
       height: 'auto',
       width: '100%',
