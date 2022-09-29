@@ -1,7 +1,6 @@
 import { usePlugin, renderWidget, useTracker, SelectionType } from '@remnote/plugin-sdk';
 import React from 'react';
-
-var gis = require('g-i-s');
+import {gis} from '../lib/gis';
 
 function cleanSelectedText(s?: string) {
   return (
@@ -41,9 +40,10 @@ function ImageSearch() {
 
   // By wrapping the call to `useTracker` in
   // `useDebounce`, the `selTextRichText` value will only get set
-  // *after* the user has stopped changing the selected text for 0.5 seconds.
+  // *after* the user has stopped changing the selected text for 1.5 seconds.
   // Since the API gets called every time the value of `selTextRichText` /
-  // `selText` change, debouncing limits unnecessary API calls.
+  // `selText` change, debouncing limits unnecessary API calls and hopefully
+  // prevents us from getting rate limited.
   const searchTerm = useDebounce(
     useTracker(async (reactivePlugin) => {
       const sel = await reactivePlugin.editor.getSelection();
@@ -53,30 +53,26 @@ function ImageSearch() {
         return undefined;
       }
     }),
-    500
+    1500
   );
 
   // When the selText value changes, and it is not null or undefined,
   // call the dictionary API to get the definition of the selText.
   React.useEffect(() => {
     const getAndSetData = async () => {
-      if (!searchTerm) {
-        return;
-      }
       try {
-        gis(searchTerm, logResults);
-
-        function logResults(error: any, results: any) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(JSON.stringify(results, null, '  '));
-          }
+        if (!searchTerm) {
+          return;
         }
+        const results = await gis(searchTerm)
+        if (!results) {
+          return
+        }
+        console.log(results);
       } catch (e) {
-        console.log('Error getting dictionary info: ', e);
+        console.log('Error getting images', e)
       }
-    };
+    }
 
     getAndSetData();
   }, [searchTerm]);

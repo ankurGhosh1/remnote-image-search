@@ -10,23 +10,9 @@
   },
   "dependencies": {
     "@remnote/plugin-sdk": "^0.0.14",
-    "assert": "^2.0.0",
-    "browserify-zlib": "^0.2.0",
-    "crypto-browserify": "^3.12.0",
-    "fs": "^0.0.1-security",
-    "g-i-s": "^2.1.6",
-    "https-browserify": "^1.0.0",
-    "net": "^1.0.2",
-    "path-browserify": "^1.0.1",
+    "cheerio": "^1.0.0-rc.12",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "tls": "^0.0.1",
-    "tunnel-agent": "^0.6.0",
-    "url": "^0.11.0",
-    "util": "^0.12.4",
-    "utils": "^0.2.2"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
