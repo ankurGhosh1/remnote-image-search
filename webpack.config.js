@@ -32,6 +32,18 @@ const config = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    fallback: {
+      util: require.resolve('util/'),
+      https: require.resolve('https-browserify'),
+      assert: require.resolve('assert'),
+      http: require.resolve('stream-http'),
+      url: require.resolve('url/'),
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      zlib: require.resolve('browserify-zlib'),
+      path: require.resolve('path-browserify'),
+      fs: false,
+    },
   },
   module: {
     rules: [
