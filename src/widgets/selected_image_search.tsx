@@ -1,6 +1,7 @@
 import { usePlugin, renderWidget, useTracker, SelectionType } from '@remnote/plugin-sdk';
 import React from 'react';
-import {gis} from '../lib/gis';
+import { gis } from '../lib/gis';
+import searchScript from './components/searchScript';
 
 function cleanSelectedText(s?: string) {
   return (
@@ -59,20 +60,38 @@ function ImageSearch() {
   // When the selText value changes, and it is not null or undefined,
   // call the dictionary API to get the definition of the selText.
   React.useEffect(() => {
-    const getAndSetData = async () => {
+    const getAndSetData = () => {
       try {
         if (!searchTerm) {
           return;
         }
-        const results = await gis(searchTerm)
-        if (!results) {
-          return
+        // console.log(searchTerm);
+        // const results = await gis(searchTerm);
+        // console.log(results);
+        searchScript();
+
+        function getImages(searchTerm: string) {
+          const page = 0;
+          const urlList = [];
+          console.log(window.google);
+          // console.log(
+          //   window.google.search.cse.element.getAllElements()['standard0'].execute(searchTerm)
+          // );
+          // setWordData(
+          //   window.google.search.cse.element.getAllElements()['standard0'].execute(searchTerm)
+          // );
         }
-        console.log(results);
+
+        getImages(searchTerm);
+
+        if (!searchTerm) {
+          return;
+        }
+        console.log(JSON.stringify(searchTerm, null, '  '));
       } catch (e) {
-        console.log('Error getting images', e)
+        console.log('Error getting images', e);
       }
-    }
+    };
 
     getAndSetData();
   }, [searchTerm]);
