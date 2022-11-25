@@ -1,7 +1,7 @@
 import { usePlugin, renderWidget, useTracker, SelectionType } from '@remnote/plugin-sdk';
 import React from 'react';
-import { gis } from '../lib/gis';
-import searchScript from './components/searchScript';
+import GoogleMapReact from 'google-map-react';
+import GoogleMapRender from './components/GoogleMapRender';
 
 function cleanSelectedText(s?: string) {
   return (
@@ -32,71 +32,64 @@ export function useDebounce<T>(value: T, msDelay: number) {
   }, [value, msDelay]);
   return debouncedValue;
 }
+export const AnyReactComponent = ({ text }: any) => <div>{text}</div>;
 
-function ImageSearch() {
+function GoogleMaps() {
   const plugin = usePlugin();
 
   // This stores the response from the dictionary API.
   const [wordData, setWordData] = React.useState<string>();
-
+  const location = {
+    address: '1600 Amphitheatre Parkway, Mountain View, california.',
+    lat: 37.42216,
+    lng: -122.08427,
+  };
   // By wrapping the call to `useTracker` in
   // `useDebounce`, the `selTextRichText` value will only get set
-  // *after* the user has stopped changing the selected text for 1.5 seconds.
+  // *after* the user has stopped changing the selected text for 0.5 seconds.
   // Since the API gets called every time the value of `selTextRichText` /
-  // `selText` change, debouncing limits unnecessary API calls and hopefully
-  // prevents us from getting rate limited.
+  // `selText` change, debouncing limits unnecessary API calls.
+  // API key: AIzaSyAsJNkMJGun80q3GUAFQEzUPMD0Rpr6zlk
   const searchTerm = useDebounce(
     useTracker(async (reactivePlugin) => {
       const sel = await reactivePlugin.editor.getSelection();
       if (sel?.type == SelectionType.Text) {
-        return cleanSelectedText(await plugin.richText.toString(sel.richText));
+        console.log(sel.richText);
+        // return cleanSelectedText(await plugin.richText.toString(sel.richText));
+        return (
+          <div style={{ height: '100%', width: '100%' }}>
+            <GoogleMapRender key="AIzaSyAsJNkMJGun80q3GUAFQEzUPMD0Rpr6zlk" location={location} />
+          </div>
+        );
       } else {
         return undefined;
       }
     }),
-    1500
+    500
   );
 
   // When the selText value changes, and it is not null or undefined,
   // call the dictionary API to get the definition of the selText.
-  React.useEffect(() => {
-    const getAndSetData = () => {
-      try {
-        if (!searchTerm) {
-          return;
-        }
-        // console.log(searchTerm);
-        // const results = await gis(searchTerm);
-        // console.log(results);
-        searchScript();
 
-        function getImages(searchTerm: string) {
-          const page = 0;
-          const urlList = [];
-          console.log(window.google);
-          // console.log(
-          //   window.google.search.cse.element.getAllElements()['standard0'].execute(searchTerm)
-          // );
-          // setWordData(
-          //   window.google.search.cse.element.getAllElements()['standard0'].execute(searchTerm)
-          // );
-        }
+  // React.useEffect(() => {
+  //   const getAndSetData = async () => {
+  //     if (!searchTerm) {
+  //       return;
+  //     }
+  //     try {
+  //       const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
+  //       const response = await fetch(url + searchTerm);
+  //       const json = await response.json();
+  //       setWordData(Array.isArray(json) ? json[0] : undefined);
+  //     } catch (e) {
+  //       console.log('Error getting dictionary info: ', e);
+  //     }
+  //   };
 
-        getImages(searchTerm);
-
-        if (!searchTerm) {
-          return;
-        }
-        console.log(JSON.stringify(searchTerm, null, '  '));
-      } catch (e) {
-        console.log('Error getting images', e);
-      }
-    };
-
-    getAndSetData();
-  }, [searchTerm]);
+  //   getAndSetData();
+  // }, [searchTerm]);
 
   return <pre>{JSON.stringify(wordData, null, 2)}</pre>;
 }
 
-renderWidget(ImageSearch);
+renderWidget(GoogleMaps);

@@ -10,7 +10,7 @@ async function onActivate(plugin: ReactRNPlugin) {
       width: '100%',
     },
     widgetTabIcon: 'https://cdn-icons-png.flaticon.com/512/2069/2069555.png',
-    widgetTabTitle: 'Image Search',
+    widgetTabTitle: 'Google Map',
   });
 }
 
