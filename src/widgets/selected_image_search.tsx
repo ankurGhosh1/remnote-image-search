@@ -39,10 +39,10 @@ function GoogleMaps() {
 
   // This stores the response from the dictionary API.
   const [wordData, setWordData] = React.useState<string>();
-  const location = {
-    address: '1600 Amphitheatre Parkway, Mountain View, california.',
-    lat: 37.42216,
-    lng: -122.08427,
+  let location = {
+    address: 'location',
+    lat: 0,
+    lng: 0,
   };
   // By wrapping the call to `useTracker` in
   // `useDebounce`, the `selTextRichText` value will only get set
@@ -54,7 +54,14 @@ function GoogleMaps() {
     useTracker(async (reactivePlugin) => {
       const sel = await reactivePlugin.editor.getSelection();
       if (sel?.type == SelectionType.Text) {
-        console.log(sel.richText);
+        plugin.richText.toString(sel.richText).then((data) => {
+          const [lat, lng] = data.split(' ');
+          console.log(lat, lng);
+          location.lat = +lat;
+          location.lng = +lng;
+          console.log(location);
+        });
+
         // return cleanSelectedText(await plugin.richText.toString(sel.richText));
         return (
           <div style={{ height: '100%', width: '100%' }}>
