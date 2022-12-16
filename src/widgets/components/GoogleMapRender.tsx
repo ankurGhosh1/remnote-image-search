@@ -12,7 +12,7 @@ interface LocationProps {
 }
 
 interface IProps {
-  key: string;
+  apiKey: string;
   location: LocationProps;
   defaultZoom?: number;
 }
@@ -22,15 +22,15 @@ export const LocationPin = function ({ text }: LocationText) {
 };
 
 function GoogleMapRender(props: IProps) {
-  const { key, location, defaultZoom = 13 } = props;
+  const { apiKey, location, defaultZoom = 13 } = props;
   return (
     <div>
-      <h1>{key}</h1>
-      <code>{location}</code>
+      <h1>{apiKey}</h1>
+      <code>{JSON.stringify(location)}</code>
       <h3>{defaultZoom}</h3>
 
       <GoogleMapReact
-        bootstrapURLKeys={{ key: key }}
+        bootstrapURLKeys={{ key: apiKey }}
         defaultCenter={location}
         defaultZoom={defaultZoom}
       >
